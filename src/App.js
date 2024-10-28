@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Content from './Content';
 
 // //const orders = [100, 200, 300]
@@ -190,12 +190,61 @@ import Content from './Content';
 //   )
 // }
 
+// function App() {
+//   const [show, setShow] = useState(false)
+//   return (
+//     <div style={{ padding: 20 }}>
+//       <button onClick={() => setShow(!show)}>Toogle</button>
+//       {show && <Content />}
+//     </div>
+//   )
+// }
+
+//useRef
+// function App() {
+//   const [count, setCount] = useState(60)
+
+//   const timerId = useRef()
+//   const prevCount = useRef()
+
+//   useEffect(() => {
+//     prevCount.current = count
+//   }, [count])
+
+//   const handleStart = () => {
+//     timerId.current = setInterval(() => {
+//       setCount(prevCount => prevCount - 1)
+//     }, 1000);
+//     console.log('start: ', timerId.current);
+//   }
+//   const handleStop = () => {
+//     clearInterval(timerId.current)
+//     console.log('stop: ', timerId.current);
+
+//   }
+//   console.log(count, prevCount.current);
+//   console.log('Component rendered');
+//   return (
+//     <div style={{ padding: 20 }}>
+//       <h1>{count}</h1>
+//       <button onClick={handleStart}>Start</button>
+//       <button onClick={handleStop}>Stop</button>
+//     </div>
+//   )
+// }
+
 function App() {
-  const [show, setShow] = useState(false)
+  const [count, setCount] = useState(0)
+
+  const increase = () => {
+    setCount(count + 1)
+  }
+
   return (
-    <div style={{ padding: 20 }}>
-      <button onClick={() => setShow(!show)}>Toogle</button>
-      {show && <Content />}
+    <div style={{ padding: '10px 32px' }}>
+      <Content count={count} />
+      <h1>{count}</h1>
+      <button onClick={increase}>Click me!</button>
     </div>
   )
 }
