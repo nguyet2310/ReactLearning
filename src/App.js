@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Content from './Content';
 
 // //const orders = [100, 200, 300]
@@ -236,15 +236,14 @@ import Content from './Content';
 function App() {
   const [count, setCount] = useState(0)
 
-  const increase = () => {
-    setCount(count + 1)
-  }
+  const handleIncrease = useCallback(() => {
+    setCount(prevCount => prevCount + 1)
+  }, [])
 
   return (
     <div style={{ padding: '10px 32px' }}>
-      <Content count={count} />
+      <Content s={handleIncrease} />
       <h1>{count}</h1>
-      <button onClick={increase}>Click me!</button>
     </div>
   )
 }

@@ -267,10 +267,13 @@ const lessons = [
 // }
 
 //memo()
-function Content({ count }) {
+function Content({ onIncrease }) {
     console.log('re - render');
     return (
-        <h2>Hello ae {count}</h2>
+        <>
+            <h2>Hello ae</h2>
+            <button onClick={onIncrease}>Click me!</button>
+        </>
     )
 }
 
