@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo, useReducer } from 'react';
 import Content from './Content';
 
 // //const orders = [100, 200, 300]
@@ -250,63 +250,108 @@ import Content from './Content';
 // }
 
 //useMemo()
-function App() {
-  const [name, setName] = useState('')
-  const [price, setPrice] = useState('')
-  const [products, setProducts] = useState([])
+// function App() {
+//   const [name, setName] = useState('')
+//   const [price, setPrice] = useState('')
+//   const [products, setProducts] = useState([])
 
-  //tro lai vao input name
-  const nameRef = useRef()
+//   //tro lai vao input name
+//   const nameRef = useRef()
 
-  const handleSubmit = () => {
-    setProducts([...products, {
-      name,
-      price: +price //parse price qua số Number(price) hoặc parseInt(price)
-    }])
-    //clear input lai
-    setName('')
-    setPrice('')
-    nameRef.current.focus()
+//   const handleSubmit = () => {
+//     setProducts([...products, {
+//       name,
+//       price: +price //parse price qua số Number(price) hoặc parseInt(price)
+//     }])
+//     //clear input lai
+//     setName('')
+//     setPrice('')
+//     nameRef.current.focus()
+//   }
+
+//   //const total = products.reduce((result, prod) => result + prod.price, 0)
+//   //viết return để console.log
+//   // const total = products.reduce((result, prod) => {
+//   //   console.log('tinh toan lai...')
+//   //   return result + prod.price
+//   // }, 0)
+
+//   const total = useMemo(() => {
+//     const result = products.reduce((result, prod) => {
+//       console.log('tinh toan lai...')
+//       return result + prod.price
+//     }, 0)
+//     return result
+//   }, [products])
+
+//   return (
+//     <div style={{ padding: '10px 32px' }}>
+//       <input
+//         ref={nameRef}
+//         value={name}
+//         placeholder='Enter name...'
+//         onChange={e => setName(e.target.value)}
+//       />
+//       <br />
+//       <input
+//         value={price}
+//         placeholder='Enter price...'
+//         onChange={e => setPrice(e.target.value)}
+//       />
+//       <br />
+//       <button onClick={handleSubmit}>Add</button>
+//       <br />
+//       Total: {total}
+//       <ul>
+//         {products.map((product, index) => (
+//           <li key={index}>{product.name} - {product.price}</li>
+//         ))}
+//       </ul>
+//     </div>
+//   )
+// }
+
+//useReducer
+
+//useState
+//1. Init state: 0
+//2. Actions: Up (state + 1) / Down (state -1)
+
+//useReducer
+//1. Init state: 0
+//2. Actions: Up (state + 1) / Down (state -1)
+//3. Reducer
+//4. Dispatch
+
+//Init state
+const initState = 0
+
+//Actions
+const UP_ACTION = 'up'
+const DOWN_ACTION = 'down'
+
+//Reducer
+const reducer = (state, action) => {
+  switch (action) {
+    case UP_ACTION:
+      return state + 1
+    case DOWN_ACTION:
+      return state - 1
+    default:
+      throw new Error('Invalid action')
   }
+}
 
-  //const total = products.reduce((result, prod) => result + prod.price, 0)
-  //viết return để console.log
-  // const total = products.reduce((result, prod) => {
-  //   console.log('tinh toan lai...')
-  //   return result + prod.price
-  // }, 0)
-
-  const total = useMemo(() => {
-    const result = products.reduce((result, prod) => {
-      console.log('tinh toan lai...')
-      return result + prod.price
-    }, 0)
-    return result
-  }, [products])
-
+function App() {
+  // const [count, setCount] = useState(0)
+  const [count, dispatch] = useReducer(reducer, initState)
   return (
-    <div style={{ padding: '10px 32px' }}>
-      <input
-        ref={nameRef}
-        value={name}
-        placeholder='Enter name...'
-        onChange={e => setName(e.target.value)}
-      />
-      <br />
-      <input
-        value={price}
-        placeholder='Enter price...'
-        onChange={e => setPrice(e.target.value)}
-      />
-      <br />
-      <button onClick={handleSubmit}>Add</button>
-      <br />
-      Total: {total}
-      <ul>
-        {products.map((product, index) => (
-          <li key={index}>{product.name} - {product.price}</li>
-        ))}
-      </ul>
+    <div style={{ padding: '0 20px' }}>
+      <h1>{count}</h1>
+      {/* <button onClick={() => setCount(count - 1)}>Down</button>
+      <button onClick={() => setCount(count + 1)}>Up</button> */}
+      <button onClick={() => dispatch(DOWN_ACTION)}>Down</button>
+      <button onClick={() => dispatch(UP_ACTION)}>Up</button>
     </div>
   )
 }
