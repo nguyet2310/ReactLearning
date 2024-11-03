@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import Content from './Content';
 
 // //const orders = [100, 200, 300]
@@ -233,17 +233,80 @@ import Content from './Content';
 //   )
 // }
 
-function App() {
-  const [count, setCount] = useState(0)
+//useCallback()
+// function App() {
+//   const [count, setCount] = useState(0)
 
-  const handleIncrease = useCallback(() => {
-    setCount(prevCount => prevCount + 1)
-  }, [])
+//   const handleIncrease = useCallback(() => {
+//     setCount(prevCount => prevCount + 1)
+//   }, [])
+
+//   return (
+//     <div style={{ padding: '10px 32px' }}>
+//       <Content onIncrease={handleIncrease} />
+//       <h1>{count}</h1>
+//     </div>
+//   )
+// }
+
+//useMemo()
+function App() {
+  const [name, setName] = useState('')
+  const [price, setPrice] = useState('')
+  const [products, setProducts] = useState([])
+
+  //tro lai vao input name
+  const nameRef = useRef()
+
+  const handleSubmit = () => {
+    setProducts([...products, {
+      name,
+      price: +price //parse price qua số Number(price) hoặc parseInt(price)
+    }])
+    //clear input lai
+    setName('')
+    setPrice('')
+    nameRef.current.focus()
+  }
+
+  //const total = products.reduce((result, prod) => result + prod.price, 0)
+  //viết return để console.log
+  // const total = products.reduce((result, prod) => {
+  //   console.log('tinh toan lai...')
+  //   return result + prod.price
+  // }, 0)
+
+  const total = useMemo(() => {
+    const result = products.reduce((result, prod) => {
+      console.log('tinh toan lai...')
+      return result + prod.price
+    }, 0)
+    return result
+  }, [products])
 
   return (
     <div style={{ padding: '10px 32px' }}>
-      <Content s={handleIncrease} />
-      <h1>{count}</h1>
+      <input
+        ref={nameRef}
+        value={name}
+        placeholder='Enter name...'
+        onChange={e => setName(e.target.value)}
+      />
+      <br />
+      <input
+        value={price}
+        placeholder='Enter price...'
+        onChange={e => setPrice(e.target.value)}
+      />
+      <br />
+      <button onClick={handleSubmit}>Add</button>
+      <br />
+      Total: {total}
+      <ul>
+        {products.map((product, index) => (
+          <li key={index}>{product.name} - {product.price}</li>
+        ))}
+      </ul>
     </div>
   )
 }
